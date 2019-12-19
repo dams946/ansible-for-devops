@@ -9,43 +9,43 @@
     image: "ami-0ff760d16d9497662" #Centos7
     instances:
       - name: a4d.lamp.varnish
-        group: "lamp-varnish"
+        group: "lamp_varnish"
         security_group: ["default", "a4d_lamp_http"]
         type: "t2.micro"
         image: "{{ image }}"
         region: "{{ region }}"
       - name: a4d.lamp.www.1
-        group: "lamp-www"
+        group: "lamp_www"
         security_group: ["default", "a4d_lamp_http"]
         type: "t2.micro"
         image: "{{ image }}"
         region: "{{ region }}"
       - name: a4d.lamp.www.2
-        group: "lamp-www"
+        group: "lamp_www"
         security_group: ["default", "a4d_lamp_http"]
         type: "t2.micro"
         image: "{{ image }}"
         region: "{{ region }}"
 #      - name: a4d.lamp.www.3
-#        group: "lamp-www"
+#        group: "lamp_www"
 #        security_group: ["default", "a4d_lamp_http"]
 #        type: "t2.micro"
 #        image: "{{ image }}"
 #        region: "{{ region }}"
       - name: a4d.lamp.db.1
-        group: "lamp-db"
+        group: "lamp_db"
         security_group: ["default", "a4d_lamp_db"]
         type: t2.micro
         image: "{{ image }}"
         region: "{{ region }}"
       - name: a4d.lamp.db.2
-        group: "lamp-db"
+        group: "lamp_db"
         security_group: ["default", "a4d_lamp_db"]
         type: "t2.micro"
         image: "{{ image }}"
         region: "{{ region }}"
       - name: a4d.lamp.memcached
-        group: "lamp-memcached"
+        group: "lamp_memcached"
         security_group: ["default", "a4d_lamp_memcached"]
         type: "t2.micro"
         image: "{{ image }}"
