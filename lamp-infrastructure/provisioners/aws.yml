@@ -26,6 +26,12 @@
         type: "t2.micro"
         image: "{{ image }}"
         region: "{{ region }}"
+#      - name: a4d.lamp.www.3
+#        group: "lamp-www"
+#        security_group: ["default", "a4d_lamp_http"]
+#        type: "t2.micro"
+#        image: "{{ image }}"
+#        region: "{{ region }}"
       - name: a4d.lamp.db.1
         group: "lamp-db"
         security_group: ["default", "a4d_lamp_db"]
