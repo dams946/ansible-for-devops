@@ -4,25 +4,46 @@
   gather_facts: false
 
   vars:
+    ssh_key: "a4d-key"
+    region: "eu-west-1" # Dublin
+    image: "ami-0ff760d16d9497662" #Centos7
     instances:
       - name: a4d.lamp.varnish
         group: "lamp-varnish"
         security_group: ["default", "a4d_lamp_http"]
+        type: "t2.micro"
+        image: "{{ image }}"
+        region: "{{ region }}"
       - name: a4d.lamp.www.1
         group: "lamp-www"
         security_group: ["default", "a4d_lamp_http"]
+        type: "t2.micro"
+        image: "{{ image }}"
+        region: "{{ region }}"
       - name: a4d.lamp.www.2
         group: "lamp-www"
         security_group: ["default", "a4d_lamp_http"]
+        type: "t2.micro"
+        image: "{{ image }}"
+        region: "{{ region }}"
       - name: a4d.lamp.db.1
         group: "lamp-db"
         security_group: ["default", "a4d_lamp_db"]
+        type: t2.micro
+        image: "{{ image }}"
+        region: "{{ region }}"
       - name: a4d.lamp.db.2
         group: "lamp-db"
         security_group: ["default", "a4d_lamp_db"]
+        type: "t2.micro"
+        image: "{{ image }}"
+        region: "{{ region }}"
       - name: a4d.lamp.memcached
         group: "lamp-memcached"
         security_group: ["default", "a4d_lamp_memcached"]
+        type: "t2.micro"
+        image: "{{ image }}"
+        region: "{{ region }}"
 
     security_groups:
       - name: a4d_lamp_http
@@ -60,13 +81,18 @@
             to_port: 22
             cidr_ip: 0.0.0.0/0
         rules_egress: []
-
+  pre_tasks:
+    - name: "Ensure key pair is present"
+      ec2_key:
+        name: "{{ ssh_key | default('lamp_aws') }}"
+        key_material: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
+        region: "{{ region | default('eu-west-1') }}" # Dublin
   tasks:
     - name: Configure EC2 Security Groups.
       ec2_group:
         name: "{{ item.name }}"
         description: Example EC2 security group for A4D.
-        region: "{{ item.region | default('us-west-2') }}" # Oregon
+        region: "{{ item.region | default('eu-west-1') }}" # Dublin
         state: present
         rules: "{{ item.rules }}"
         rules_egress: "{{ item.rules_egress }}"
@@ -74,14 +100,14 @@
 
     - name: Provision EC2 instances.
       ec2:
-        key_name: "{{ item.ssh_key | default('lamp_aws') }}"
+        key_name: "{{ ssh_key | default('lamp_aws') }}"
         instance_tags:
           inventory_group: "{{ item.group | default('') }}"
           inventory_host: "{{ item.name | default('') }}"
         group: "{{ item.security_group | default('') }}"
-        instance_type: "{{ item.type | default('t2.micro')}}" # Free
-        image: "{{ item.image | default('ami-11125e21') }}" # RHEL6
-        region: "{{ item.region | default('us-west-2') }}" # Oregon
+        instance_type: "{{ item.type | default('t2.micro')}}" # Free with agreement
+        image: "{{ item.image | default('ami-0ff760d16d9497662') }}" # CentOS 7
+        region: "{{ item.region | default('eu-west-1') }}" # Dublin
         wait: yes
         wait_timeout: 500
         exact_count: 1
@@ -96,7 +122,7 @@
         name: "{{ item.1.tagged_instances.0.public_ip }}"
         groups: "aws,{{ item.1.item.group }},{{ item.1.item.name }}"
         # You can dynamically add inventory variables per-host.
-        ansible_ssh_user: ec2-user
+        ansible_ssh_user: centos
         host_key_checking: false
         mysql_replication_role: >
           {{ 'master' if (item.1.item.name == 'a4d.lamp.db.1')
