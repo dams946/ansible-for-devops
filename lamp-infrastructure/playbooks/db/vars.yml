@@ -2,8 +2,11 @@
 firewall_allowed_tcp_ports:
   - "22"
   - "3306"
+firewall_additional_rules:
+#  - "iptables -A INPUT -p tcp -d {{ ansible_default_ipv4.address }} --dport 3306 -s {{ groups['lamp_www'][0] }} -j ACCEPT"
+#  - "iptables -A INPUT -p tcp -d {{ ansible_default_ipv4.address }} --dport 3306 -s {{ groups['lamp_www'][1] }} -j ACCEPT"
 
-mysql_replication_user: {name: 'replication', password: 'secret'}
+mysql_replication_user: {name: 'replication', password: 'secretbiengarde6490'}
 mysql_databases:
   - name: mycompany_database
     collation: utf8_general_ci
