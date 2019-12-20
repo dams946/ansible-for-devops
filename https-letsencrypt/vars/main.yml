@@ -17,4 +17,4 @@ certbot_create_if_missing: yes
 certbot_admin_email: "{{ letsencrypt_email }}"
 certbot_certs:
   - domains:
-      - "{{ inventory_hostname }}"
+      - "{{ inventory_hostname }}.xip.io"
