@@ -1,0 +1,13 @@
+- hosts: a4d_lamp_varnish
+  roles:
+    - geerlingguy.repo-epel
+  vars:
+    dest:
+      - address: {{ groups['lamp_www'] }}
+        ports:
+          - "80"
+  tasks:
+    - package:
+      name: nmap
+    - command: nmap
+      register: nmap_output
