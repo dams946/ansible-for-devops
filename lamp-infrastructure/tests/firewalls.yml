@@ -20,9 +20,8 @@
             ports: "3306"
   pre_tasks:
     - package:
-        name:
-          - nmap
-      become: yes
+        name: nmap
+        become: yes
   tasks:
     - block:
         - shell: /usr/bin/nmap -p {{ item.ports }} -oN - {{ item.address }} | grep -E 'open|filtered|closed'
@@ -61,8 +60,8 @@
             label: "{{ nmap_output.results }}"
       ignore_errors: yes
   post_tasks:
+  pre_tasks:
     - package:
-        name:
-          - nmap
-      state: absent
-      become: yes
+        name: nmap
+        state: absent
+        become: yes
