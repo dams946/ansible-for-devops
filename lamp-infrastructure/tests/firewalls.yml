@@ -67,3 +67,8 @@
           loop_control:
             label: "{{ nmap_output.results }}"
       ignore_errors: yes
+    - package:
+        name:
+          - nmap
+      state: absent
+      become: yes
