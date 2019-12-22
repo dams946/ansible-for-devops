@@ -21,7 +21,7 @@
   pre_tasks:
     - package:
         name: nmap
-        become: yes
+      become: yes
   tasks:
     - block:
         - shell: /usr/bin/nmap -p {{ item.ports }} -oN - {{ item.address }} | grep -E 'open|filtered|closed'
@@ -64,4 +64,4 @@
     - package:
         name: nmap
         state: absent
-        become: yes
+      become: yes
