@@ -18,12 +18,13 @@
             ports: "3306"
           - address: "{{ groups['tag_inventory_group_lamp_www'][1] }}"
             ports: "3306"
+  pre_tasks:
+    - package:
+        name:
+          - nmap
+      become: yes
   tasks:
     - block:
-        - package:
-            name:
-              - nmap
-          become: yes
         - shell: /usr/bin/nmap -p {{ item.ports }} -oN - {{ item.address }} | grep -E 'open|filtered|closed'
           register: nmap_output
           loop: "{{ targets.www }}"
@@ -36,10 +37,6 @@
             label: "{{ nmap_output.results }}"
       ignore_errors: yes
     - block:
-        - package:
-            name:
-              - nmap
-          become: yes
         - shell: /usr/bin/nmap -p {{ item.ports }} -oN - {{ item.address }} | grep -E 'open|filtered|closed'
           register: nmap_output
           loop: "{{ targets.memcached }}"
@@ -52,10 +49,6 @@
             label: "{{ nmap_output.results }}"
       ignore_errors: yes
     - block:
-        - package:
-            name:
-              - nmap
-          become: yes
         - shell: /usr/bin/nmap -p {{ item.ports }} -oN - {{ item.address }} | grep -E 'open|filtered|closed'
           register: nmap_output
           loop: "{{ targets.db }}"
@@ -67,6 +60,7 @@
           loop_control:
             label: "{{ nmap_output.results }}"
       ignore_errors: yes
+  post_tasks:
     - package:
         name:
           - nmap
