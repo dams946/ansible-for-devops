@@ -60,7 +60,6 @@
             label: "{{ nmap_output.results }}"
       ignore_errors: yes
   post_tasks:
-  pre_tasks:
     - package:
         name: nmap
         state: absent
