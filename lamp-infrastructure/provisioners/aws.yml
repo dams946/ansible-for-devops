@@ -8,6 +8,12 @@
     region: "eu-west-1" # Dublin
     image: "ami-0ff760d16d9497662" #Centos7
     instances:
+      - name: a4d.lamp.https
+        group: "lamp_https"
+        security_group: ["default", "a4d_lamp_https"]
+        type: "t2.micro"
+        image: "{{ image }}"
+        region: "{{ region }}"
       - name: a4d.lamp.varnish
         group: "lamp_varnish"
         security_group: ["default", "a4d_lamp_http"]
@@ -52,6 +58,21 @@
         region: "{{ region }}"
 
     security_groups:
+      - name: a4d_lamp_https
+        rules:
+          - proto: tcp
+            from_port: 443
+            to_port: 443
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 80
+            to_port: 80
+            cidr_ip: 0.0.0.0/0
+          - proto: tcp
+            from_port: 22
+            to_port: 22
+            cidr_ip: 0.0.0.0/0
+        rules_egress: []
       - name: a4d_lamp_http
         rules:
           - proto: tcp
@@ -125,7 +146,7 @@
 
     - name: Add EC2 instances to inventory groups.
       add_host:
-        name: "{{ item.1.tagged_instances.0.public_ip }}"
+        name: "{{ item.1.tagged_instances.0.private_ip }}"
         #name: "{{ item.1.tagged_instances.0.private_ip }}"
         groups: "aws,{{ item.1.item.group }},{{ item.1.item.name }}"
         # You can dynamically add inventory variables per-host.
