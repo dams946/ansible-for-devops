@@ -8,7 +8,7 @@ firewall_additional_rules:
 wp_database_name: wp_database
 wp_database_username: admin
 wp_database_password: secretbiengarde6490
-wp_database_host: "{{ groups['lamp_memcached'][0] }}:11211"
+wp_database_host: "{{ groups['lamp_db'][0] }}:3306"
 wp_site_name: "{{ dns_name }}"
 wp_site_title: "{{ dns_name }} Wordpress Blog"
 wp_admin_username: admin
