@@ -22,12 +22,15 @@
 
 
   roles:
-    - geerlingguy.firewall
-    - geerlingguy.repo-epel
-    - geerlingguy.apache
-    - geerlingguy.php
-    - geerlingguy.php-mysql
-    - geerlingguy.php-memcached
+    - role: geerlingguy.firewall
+    - role: geerlingguy.repo-epel
+    - role: geerlingguy.apache
+    - role: geerlingguy.repo-remi
+      when:
+        - ansible_os_family == 'RedHat'
+        - ansible_distribution != 'Fedora'
+    - role: geerlingguy.php    - geerlingguy.php-mysql
+    - role: geerlingguy.php-memcached
 
   tasks:
     - name: "Remove the Apache test page"
