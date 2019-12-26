@@ -28,7 +28,6 @@
     nginx_vhosts:
       - listen: "443 ssl http2"
         server_name: "{{ dns_name }}"
-        server_name_redirect: "www.{{ dns_name }}"
         filename: "{{ dns_name }}.conf"
         extra_parameters: |
           location / {
