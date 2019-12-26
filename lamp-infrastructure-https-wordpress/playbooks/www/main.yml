@@ -16,8 +16,15 @@
   tasks:
     - name: "Remove the Apache test page"
       file:
-        path: /var/www/html/index.html
+        path: /var/www/html
         state: absent
+    - name: "Place /var/www/html"
+      file:
+        path: /var/www/html
+        state: directory
+        mode: '0755'
+        owner: root
+        group: root
     - name: "Download WordPress cli"
       get_url:
         url: https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
