@@ -45,10 +45,3 @@
   tasks:
     - name: Flush handlers in case any configs have changed.
       meta: flush_handlers
-
-    - name: Test secure connection to TLS domain.
-      uri:
-        url: https://{{ dns_name }}/
-        status_code: 200
-      delegate_to: localhost
-      become: false
