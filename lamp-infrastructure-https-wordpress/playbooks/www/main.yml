@@ -26,9 +26,9 @@
     - name: "Download latest WordPress locally"
       command: "/usr/local/bin/wp core download --path=/var/www/html --locale=fr_FR --allow-root"
     - name: WordPress configuration
-      command: "/usr/local/bin/wp core config --dbname={{ wp_database_name }} --dbuser={{ wp_database_username }} --dbpass={{ wp_database_password }} --path=/var/www/html"
+      command: "/usr/local/bin/wp core config --dbname={{ wp_database_name }} --dbuser={{ wp_database_username }} --dbpass={{ wp_database_password }} --path=/var/www/html --allow-root"
     - name: Install Wordpress
-      command: "/usr/local/bin/wp core install --url={{ wp_site_name }} --title={{ wp_site_title }} --admin_user={{ wp_admin_username }} --admin_password={{ wp_admin_password }} --admin_email={{ wp_admin_email }} --path=/var/www/html"
+      command: "/usr/local/bin/wp core install --url={{ wp_site_name }} --title={{ wp_site_title }} --admin_user={{ wp_admin_username }} --admin_password={{ wp_admin_password }} --admin_email={{ wp_admin_email }} --path=/var/www/html --allow-root"
     - name: "Download latest WordPress locally"
       command: "/usr/local/bin/wp update --all --path=/var/www/html"
 
