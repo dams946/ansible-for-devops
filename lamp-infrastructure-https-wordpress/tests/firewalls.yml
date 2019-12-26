@@ -1,0 +1,66 @@
+- hosts: tag_inventory_host_a4d_lamp_varnish
+  gather_facts: True
+  remote_user: centos
+  roles:
+    - geerlingguy.repo-epel
+  vars:
+    targets:
+      www:
+          - address: "{{ groups['tag_inventory_group_lamp_www'][0] }}"
+            ports: "80"
+          - address: "{{ groups['tag_inventory_group_lamp_www'][1] }}"
+            ports: "80"
+      memcached:
+          - address: "{{ groups['tag_inventory_group_lamp_memcached'][0] }}"
+            ports: "11211"
+      db:
+          - address: "{{ groups['tag_inventory_group_lamp_www'][0] }}"
+            ports: "3306"
+          - address: "{{ groups['tag_inventory_group_lamp_www'][1] }}"
+            ports: "3306"
+  pre_tasks:
+    - package:
+        name: nmap
+      become: yes
+  tasks:
+    - block:
+        - shell: /usr/bin/nmap -p {{ item.ports }} -oN - {{ item.address }} | grep -E 'open|filtered|closed'
+          register: nmap_output
+          loop: "{{ targets.www }}"
+          changed_when: "nmap_output.rc != 0"
+        - assert:
+            that:
+              - "'80/tcp open  http' in item.stdout_lines"
+          loop: "{{ nmap_output.results }}"
+          loop_control:
+            label: "{{ nmap_output.results }}"
+      ignore_errors: yes
+    - block:
+        - shell: /usr/bin/nmap -p {{ item.ports }} -oN - {{ item.address }} | grep -E 'open|filtered|closed'
+          register: nmap_output
+          loop: "{{ targets.memcached }}"
+          changed_when: "nmap_output.rc != 0"
+        - assert:
+            that:
+              - "item.rc == 0"
+          loop: "{{ nmap_output.results }}"
+          loop_control:
+            label: "{{ nmap_output.results }}"
+      ignore_errors: yes
+    - block:
+        - shell: /usr/bin/nmap -p {{ item.ports }} -oN - {{ item.address }} | grep -E 'open|filtered|closed'
+          register: nmap_output
+          loop: "{{ targets.db }}"
+          changed_when: "nmap_output.rc != 0"
+        - assert:
+            that:
+              - "item.rc == 0"
+          loop: "{{ nmap_output.results }}"
+          loop_control:
+            label: "{{ nmap_output.results }}"
+      ignore_errors: yes
+  post_tasks:
+    - package:
+        name: nmap
+        state: absent
+      become: yes

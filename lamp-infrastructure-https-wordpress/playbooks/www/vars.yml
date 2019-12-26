@@ -1,0 +1,15 @@
+---
+firewall_allowed_tcp_ports:
+  - "22"
+#  - "80"
+firewall_additional_rules:
+  - "iptables -A INPUT -p tcp -d {{ ansible_default_ipv4.address }} --dport 80 -s {{ groups['lamp_varnish'][0] }} -j ACCEPT"
+
+wp_database_name: wp_database
+wp_database_username: admin
+wp_database_password: secretbiengarde6490
+wp_site_name: "{{ dns_name }}"
+wp_site_title: "{{ dns_name }} Wordpress Blog"
+wp_admin_username: admin
+wp_admin_password: secretbiengarde6490
+wp_admin_email: goffinet@goffinet.eu
