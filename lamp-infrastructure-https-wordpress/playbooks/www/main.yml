@@ -33,7 +33,7 @@
     - name: "Download latest WordPress locally"
       command: "/usr/local/bin/wp core download --path=/var/www/html --locale=fr_FR --allow-root"
     - name: "Install mysql client"
-      packages:
+      package:
         name: mysql
     - name: WordPress configuration
       command: "/usr/local/bin/wp config create --dbname={{ wp_database_name }} --dbuser={{ wp_database_username }} --dbpass={{ wp_database_password }} --dbhost={{ wp_database_host }} --path=/var/www/html --allow-root"
