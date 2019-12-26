@@ -14,19 +14,6 @@
     - geerlingguy.php-memcached
 
   tasks:
-    - block:
-      - name: "Set the the ipv4 public address by https://ipinfo.io/"
-        uri:
-          url: https://ipinfo.io/ip
-          return_content: yes
-        register: ipinfo_content
-      - name: "Set the IPv4 address as variable"
-        set_fact:
-          ip_address: "{{ ipinfo_content.content | replace('\n', '') }}"
-      - name: "Set the FQDN xio.io"
-        set_fact:
-          dns_name: "{{ ip_address }}.xip.io"
-      delegate_to: lamp_https
     - name: "Remove the Apache test page"
       file:
         path: /var/www/html
