@@ -32,6 +32,7 @@
         error_page: ""
         access_log: ""
         error_log: ""
+        filename: "{{ dns_name }}.conf"
         extra_parameters: |
           "location / {
               proxy_set_header        Host $host;
@@ -51,6 +52,7 @@
       - listen: "80"
         server_name: "{{ dns_name }} www.{{ dns_name }}"
         return: "301 https://{{ dns_name }}$request_uri"
+        filename: "{{ dns_name }}.80.conf"
   pre_tasks:
     - name: Update apt cache.
       apt: update_cache=true cache_valid_time=600
