@@ -29,7 +29,8 @@
       when:
         - ansible_os_family == 'RedHat'
         - ansible_distribution != 'Fedora'
-    - role: geerlingguy.php    - geerlingguy.php-mysql
+    - role: geerlingguy.php
+    - role: geerlingguy.php-mysql
     - role: geerlingguy.php-memcached
 
   tasks:
