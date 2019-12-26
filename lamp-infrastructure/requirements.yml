@@ -8,3 +8,5 @@
 - src: geerlingguy.php-memcached
 - src: geerlingguy.mysql
 - src: geerlingguy.memcached
+- src: geerlingguy.certbot
+- src: geerlingguy.nginx
