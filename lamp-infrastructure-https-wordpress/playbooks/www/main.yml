@@ -24,7 +24,7 @@
         dest: /usr/local/bin/wp
         mode: 0755
     - name: "Download latest WordPress locally"
-      command: "/usr/local/bin/wp core download --path=/var/www/html --locale=fr_FR"
+      command: "/usr/local/bin/wp core download --path=/var/www/html --locale=fr_FR --allow-root"
     - name: WordPress configuration
       command: "/usr/local/bin/wp core config --dbname={{ wp_database_name }} --dbuser={{ wp_database_username }} --dbpass={{ wp_database_password }} --path=/var/www/html"
     - name: Install Wordpress
