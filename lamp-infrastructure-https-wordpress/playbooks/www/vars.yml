@@ -12,7 +12,7 @@ wp_database_username: admin
 wp_database_password: secretbiengarde6490
 wp_database_host: "{{ groups['lamp_db'][0] }}:3306"
 wp_site_name: "{{ dns_name }}"
-wp_site_title: "{{ dns_name }} Wordpress Blog"
+wp_site_title: "{{ dns_name }}"
 wp_admin_username: admin
 wp_admin_password: secretbiengarde6490
 wp_admin_email: goffinet@goffinet.eu
