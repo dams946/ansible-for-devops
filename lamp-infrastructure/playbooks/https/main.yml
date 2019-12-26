@@ -1,55 +1,25 @@
 ---
 - hosts: lamp_https
   tasks:
-    - name: "Set the the ipv4 public address by https://ipinfo.io/"
-      uri:
-        url: https://ipinfo.io/ip
-        return_content: yes
-      register: ipinfo_content
-    - name: "Set the IPv4 address as variable"
-      set_fact:
-        ip_address: "{{ ipinfo_content.content | replace('\n', '') }}"
-    - name: "Set the FQDN xio.io"
-      set_fact:
-        dns_name: "{{ ip_address }}.xip.io"
-
+    - block:
+      - name: "Set the the ipv4 public address by https://ipinfo.io/"
+        uri:
+          url: https://ipinfo.io/ip
+          return_content: yes
+        register: ipinfo_content
+      - name: "Set the IPv4 address as variable"
+        set_fact:
+          ip_address: "{{ ipinfo_content.content | replace('\n', '') }}"
+      - name: "Set the FQDN xio.io"
+        set_fact:
+          dns_name: "{{ ip_address }}.xip.io"
+      when: dns_service == 'xip'
 - hosts: lamp_https
   gather_facts: true
   become: true
   vars_files:
     - vars.yml
   vars:
-    certbot_admin_email: "admin@{{ dns_name }}"
-    certbot_create_if_missing: true
-    certbot_create_standalone_stop_services: []
-    certbot_certs:
-      - domains:
-          - "{{ dns_name }}"
-          - "www.{{ dns_name }}"
-    nginx_remove_default_vhost: true
-    nginx_vhosts:
-      - listen: "443 ssl http2"
-        server_name: "{{ dns_name }}"
-        filename: "{{ dns_name }}.conf"
-        extra_parameters: |
-          location / {
-              proxy_set_header        Host $host;
-              proxy_set_header        X-Real-IP $remote_addr;
-              proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
-              proxy_set_header        X-Forwarded-Proto $scheme;
-              # Fix the “It appears that your reverse proxy set up is broken" error.
-              proxy_pass          http://{{ groups['lamp_varnish'][0] }}:80;
-              proxy_read_timeout  90;
-              proxy_redirect      http://{{ groups['lamp_varnish'][0] }}:80 https://{{ dns_name }};
-          }
-          ssl_certificate     /etc/letsencrypt/live/{{ dns_name }}/fullchain.pem;
-          ssl_certificate_key /etc/letsencrypt/live/{{ dns_name }}/privkey.pem;
-          ssl_protocols       TLSv1.1 TLSv1.2;
-          ssl_ciphers         HIGH:!aNULL:!MD5;
-      - listen: "80"
-        server_name: "{{ dns_name }} www.{{ dns_name }}"
-        return: "301 https://{{ dns_name }}$request_uri"
-        filename: "{{ dns_name }}.80.conf"
   pre_tasks:
     - name: Update apt cache.
       apt: update_cache=true cache_valid_time=600
