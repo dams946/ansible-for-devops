@@ -3,6 +3,8 @@ firewall_allowed_tcp_ports:
   - "22"
   - "443"
   - "80"
+dns_service: xip
+webserver: "{{ groups['lamp_varnish'][0] }}"
 certbot_admin_email: "admin@{{ dns_name }}"
 certbot_create_if_missing: true
 certbot_create_standalone_stop_services: []
@@ -22,9 +24,9 @@ nginx_vhosts:
           proxy_set_header        X-Forwarded-For $proxy_add_x_forwarded_for;
           proxy_set_header        X-Forwarded-Proto $scheme;
           # Fix the “It appears that your reverse proxy set up is broken" error.
-          proxy_pass          http://{{ groups['lamp_varnish'][0] }}:80;
+          proxy_pass          http://{{ webserver }}:80;
           proxy_read_timeout  90;
-          proxy_redirect      http://{{ groups['lamp_varnish'][0] }}:80 https://{{ dns_name }};
+          proxy_redirect      http://{{ webserver }}:80 https://{{ dns_name }};
       }
       ssl_certificate     /etc/letsencrypt/live/{{ dns_name }}/fullchain.pem;
       ssl_certificate_key /etc/letsencrypt/live/{{ dns_name }}/privkey.pem;
