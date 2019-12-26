@@ -31,3 +31,10 @@
       command: "/usr/local/bin/wp core install --url={{ wp_site_name }} --title={{ wp_site_title }} --admin_user={{ wp_admin_username }} --admin_password={{ wp_admin_password }} --admin_email={{ wp_admin_email }} --path=/var/www/html"
     - name: "Download latest WordPress locally"
       command: "/usr/local/bin/wp update --all --path=/var/www/html"
+
+    - name: Test secure connection to TLS domain.
+      uri:
+        url: https://{{ dns_name }}/
+        status_code: 200
+      delegate_to: localhost
+      become: false
