@@ -16,6 +16,8 @@
 - hosts: lamp_https
   gather_facts: true
   become: true
+  vars_files:
+    - vars.yml
   vars:
     certbot_admin_email: "admin@{{ dns_name }}"
     certbot_create_if_missing: true
@@ -67,6 +69,7 @@
 
   roles:
     - geerlingguy.certbot
+    - geerlingguy.firewall
     - geerlingguy.nginx
 
   tasks:
