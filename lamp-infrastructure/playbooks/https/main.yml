@@ -13,7 +13,7 @@
       - name: "Set the FQDN xio.io"
         set_fact:
           dns_name: "{{ ip_address }}.xip.io"
-      when: dns_service == 'xip'
+
 - hosts: lamp_https
   gather_facts: true
   become: true
