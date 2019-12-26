@@ -78,8 +78,7 @@
 
     - name: Test secure connection to TLS domain.
       uri:
-        url: https://{{ item }}/
+        url: https://www.{{ dns_name }}/
         status_code: 200
       delegate_to: localhost
       become: false
-      loop: "{{ certbot_certs.domains }}"
