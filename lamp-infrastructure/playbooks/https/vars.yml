@@ -3,7 +3,6 @@ firewall_allowed_tcp_ports:
   - "22"
   - "443"
   - "80"
-dns_service: xip
 webserver: "{{ groups['lamp_varnish'][0] }}"
 certbot_admin_email: "admin@{{ dns_name }}"
 certbot_create_if_missing: true
