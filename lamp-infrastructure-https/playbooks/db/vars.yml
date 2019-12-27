@@ -10,6 +10,6 @@ firewall_additional_rules:
 
 mysql_replication_user: {name: 'replication', password: 'secretbiengarde6490'}
 mysql_databases:
-  - name: wp_database
+  - name: mycompany_database
     collation: utf8_general_ci
     encoding: utf8

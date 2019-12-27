@@ -9,13 +9,13 @@
     - name: Create dynamic MySQL variables.
       set_fact:
         mysql_users:
-          - name: admin
+          - name: mycompany_user
             host: "{{ groups['lamp_www'][0] }}"
-            password: secretbiengarde6490
+            password: secret
             priv: "*.*:SELECT"
-          - name: admin
+          - name: mycompany_user
             host: "{{ groups['lamp_www'][1] }}"
-            password: secretbiengarde6490
+            password: secret
             priv: "*.*:SELECT"
         mysql_replication_master: "{{ groups['a4d.lamp.db.1'][0] }}"
 

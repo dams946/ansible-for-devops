@@ -10,4 +10,3 @@
 - src: geerlingguy.memcached
 - src: geerlingguy.certbot
 - src: geerlingguy.nginx
-- src: geerlingguy.repo-remi

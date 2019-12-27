@@ -1,10 +1,6 @@
 ---
 firewall_allowed_tcp_ports:
   - "22"
-#  - "80"
-firewall_additional_rules:
-  - "iptables -A INPUT -p tcp -d {{ ansible_default_ipv4.address }} --dport 80 -s {{ groups['lamp_https'][0] }} -j ACCEPT"
-
-
+  - "80"
 
 varnish_use_default_vcl: false
