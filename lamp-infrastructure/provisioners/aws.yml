@@ -5,8 +5,8 @@
 
   vars:
     ssh_key: "a4d-key"
-    region: "eu-west-1" # Dublin
-    image: "ami-0ff760d16d9497662" #Centos7
+    region: "eu-west-3" # Dublin
+    image: "ami-04e905a52ec8010b2" #Centos7
     instances:
       - name: a4d.lamp.varnish
         group: "lamp_varnish"
@@ -112,7 +112,7 @@
           inventory_host: "{{ item.name | default('') }}"
         group: "{{ item.security_group | default('') }}"
         instance_type: "{{ item.type | default('t2.micro')}}" # Free with agreement
-        image: "{{ item.image | default('ami-0ff760d16d9497662') }}" # CentOS 7
+        image: "{{ item.image | default('ami-04e905a52ec8010b2') }}" # debian10
         region: "{{ item.region | default('eu-west-1') }}" # Dublin
         wait: yes
         wait_timeout: 500
@@ -129,7 +129,7 @@
         #name: "{{ item.1.tagged_instances.0.private_ip }}"
         groups: "aws,{{ item.1.item.group }},{{ item.1.item.name }}"
         # You can dynamically add inventory variables per-host.
-        ansible_ssh_user: centos
+        ansible_ssh_user: debian
         host_key_checking: false
         mysql_replication_role: >
           {{ 'master' if (item.1.item.name == 'a4d.lamp.db.1')
